@@ -1,0 +1,47 @@
+
+{% extends "base.html" %}
+{% block mainbody %}
+<table class="easyui-datagrid">
+  <thead>
+    <tr>
+      <th data-options="field:'id'">id</th>
+      <th data-options="field:'username'">登录名</th>
+      <th data-options="field:'first_name'">用户简称</th>
+      <th data-options="field:'last_name'">用户全称</th>
+      <th data-options="field:'email'">电子邮箱</th>
+      <th data-options="field:'nick_name'">所在单位</th>
+      <th data-options="field:'birday'">生日</th>
+      <th data-options="field:'address'">家庭住址</th>
+      <th data-options="field:'mobile'">联系电话</th>
+      <th data-options="field:'is_superuser'">是否系统管理员</th>
+      <th data-options="field:'is_staff'">是否工作用户</th>
+      <th data-options="field:'is_active'">账户启用状态</th>
+      <th data-options="field:'last_login'">上次登录时间</th>
+      <th data-options="field:'date_joined'">账户创建时间</th>
+      <th data-options="field:'image'">头像</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i in mydata %}
+    <tr>
+      <td>{{i.id}}</td>
+      <td>{{i.username}}</td>
+      <td>{{i.first_name}}</td>
+      <td>{{i.last_name}}</td>
+      <td>{{i.email}}</td>
+      <td>{{i.nick_name}}</td>
+      <td>{{i.birday}}</td>
+      <td>{{i.address}}</td>
+      <td>{{i.mobile}}</td>
+      <td>{{i.is_superuser}}</td>
+      <td>{{i.is_staff}}</td>
+      <td>{{i.is_active}}</td>
+      <td>{{i.last_login}}</td>
+      <td>{{i.date_joined}}</td>
+      <td>{{i.image}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock mainbody %}
+

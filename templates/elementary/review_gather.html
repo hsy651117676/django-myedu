@@ -1,0 +1,27 @@
+{%extends "base.html" %}
+  {% block mainbody %}
+<body id="cc" class="easyui-layout" >
+  <div data-options="region:'north',title:'查询条件'," style="height:80px;width:100%">
+      审核状态<select id="operatortype" class="easyui-combobox" style="width:150px;">
+      <option value="all">全部</option>
+      {% for item in dic.operator%}
+      <option value="{{item.0}}">{{item.1}}</option>
+      {% endfor %}
+    </select>
+    登记属性<select id="stuobj" class="easyui-combobox" style="width:150px;">
+      <option value="all">全部</option>
+      {% for item in dic.stuobj%}
+      <option value="{{item.0}}">{{item.1}}</option>
+      {% endfor %}
+    </select>
+    {% csrf_token %}
+    <a id="btn" class="easyui-linkbutton"  data-options="iconCls:'icon-search'" onclick="querystutable(20,1)">查询</a>
+  </div>
+  <div data-options="region:'center',title:'审核页面'"  style="padding:0px;">
+    k
+  </div>
+</body>
+
+
+  {% endblock %}
+

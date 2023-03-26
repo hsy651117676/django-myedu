@@ -1,0 +1,143 @@
+
+{%extends "base.html" %}
+{%load static %}
+{% block mainbody %}
+<div id="main" data-options="region:'center',title:'{{titles}}'" style="width:100%;height:100%;">
+  <a href="index">点我返回首页</a>
+  <h3>当前学生：{{data.0.name}}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 预报名登记学校名称：{{data.0.schoolGrade}}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 年龄：{{data.0.age}}岁 </h3>
+  <h3>登记对象属性：{{data.0.get_stuobj_display}}</h3>
+  <h4 style="color:red;">温馨提示：上传图片材料必须彩色、清晰、完整，注意图片旋转到文字向上的方向，不得横放竖版图片。</h4>
+  <form id="formID" action="" method="post" enctype="multipart/form-data" > {% csrf_token %}
+    <input id="card" value="{{data.0.card}}" name="card" hidden>
+  </form>
+<table>
+  <tr><td>上传的材料名称</br>注意：带*号是必须要上传的，材料不齐将审核不通过！</td><td>缩略图<br>
+    如已上传多页的，此页面默认显示第1页！同类材料请勿重复上传!</td><td>请点击相应“浏览”按钮上传相应文件</td></tr>
+  <tr>
+    <td><font color="red">*户口籍首页</font></td>
+    <td><div style="margin-bottom:20px"  id="addImage1"> <img id="img1" src="/static/stuimage/{{data.0.card}}/1_1x.jpg" onerror="nofind()"></div></td>
+    <td><div ><h2 id="text1" >只能上传单页</h2><input id="fb1" type="file" accept="image/*" onchange="saveImg(1)"><br /><br />
+    </div></td>
+  </tr>
+  <tr>
+    <td><font color="red">*监护人员1</font></td>
+    <td><div style="margin-bottom:20px"  id="addImage2"> <img id="img2" src="/static/stuimage/{{data.0.card}}/2_1x.jpg" onerror="nofind()"></div></td>
+    <td><div ><h2 id="text2" >只能上传单页</h2><input id="fb2" type="file" accept="image/*" onchange="saveImg(2)"><br /><br />
+    </div></td>
+  </tr>
+  <tr>
+    <td><font >监护人员2</font></td>
+    <td><div style="margin-bottom:20px"  id="addImage3"> <img id="img3" src="/static/stuimage/{{data.0.card}}/3_1x.jpg" onerror="nofind()"></div></td>
+    <td><div ><h2 id="text3" >只能上传单页</h2><input id="fb3" type="file" accept="image/*" onchange="saveImg(3)"><br /><br />
+    </div></td>
+  </tr>
+  <tr>
+    <td><font color="red">*学生本页</font></td>
+    <td><div style="margin-bottom:20px"  id="addImage4"> <img id="img4" src="/static/stuimage/{{data.0.card}}/4_1x.jpg" onerror="nofind()"></div></td>
+    <td><div ><h2 id="text4" >只能上传单页</h2><input id="fb4" type="file" accept="image/*" onchange="saveImg(4)" ><br /><br />
+    </div></td>
+  </tr>
+  <tr id="from5">
+    <td><font color="red">证明材料1</font></td>
+    <td><div style="margin-bottom:20px"  id="addImage5"> <img id="img5" src="/static/stuimage/{{data.0.card}}/5_1x.jpg" onerror="nofind()"></div></td>
+    <td><div ><h2 id="text5" >可上传多页，最多不超过5页</h2><input id="fb5" type="file" accept="image/*" onchange="saveImg(5)" multiple><br /><br />
+    </div></td>
+  </tr>
+  <tr id="from6">
+    <td><font color="red">证明材料2</font></td>
+    <td><div style="margin-bottom:20px"  id="addImage6"> <img id="img6" src="/static/stuimage/{{data.0.card}}/6_1x.jpg" onerror="nofind()"></div></td>
+    <td><div ><h2 id="text6" >可上传多页，最多不超过5页</h2><input id="fb6" type="file" accept="image/*" onchange="saveImg(6)" multiple><br /><br />
+    </div></td>
+  </tr>
+  <tr id="from7">
+    <td><font color="red">证明材料3</font></td>
+    <td><div style="margin-bottom:20px"  id="addImage7"> <img id="img7" src="/static/stuimage/{{data.0.card}}/7_1x.jpg" onerror="nofind()"></div></td>
+    <td><div ><h2 id="text7" >可上传多页，最多不超过5页</h2><input id="fb7" type="file" accept="image/*" onchange="saveImg(7)" multiple><br /><br />
+    </div></td>
+  </tr>
+  <tr id="from8">
+    <td><font >其他证明页</font></td>
+    <td><div style="margin-bottom:20px"  id="addImage8"> <img id="img8" src="/static/stuimage/{{data.0.card}}/8_1x.jpg" onerror="nofind()"></div></td>
+    <td><div ><h2 id="text8" >可上传多页，最多不超过5页</h2><input id="fb8" type="file" accept="image/*" onchange="saveImg(8)" multiple><br /><br />
+    </div></td>
+  </tr>
+  </table>
+<style>
+  img {height:160px;width:120px;}
+  table tr td { border:1px solid #0094ff;width:300px; }
+  table { text-align: center; border-collapse: collapse; padding:2px;}
+  h2 {color:red;}
+</style>
+<script>
+function saveImg(num){
+  let list_file=$("#fb"+num)[0].files;
+  if(list_file.length!=0){
+   $.messager.confirm('消息','确定要上传此类材料吗？',function(r){     
+     if (r){    	
+      $("#text" + num).text("上传中，请不要关闭此页面，等待上传完成……………………");
+      let formdata=new FormData($('#formID')[0]);
+      formdata.append("paid",num);
+      formdata.append("filenum",list_file.length);
+      for (var i=0;i<list_file.length;i++){ formdata.append("files",list_file[i]); }
+      $.ajax({url:"UploadImage", type:'POST', 
+          cache:false,processData:false, 
+          contentType:false,
+          headers:{ "X-CSRFToken":$('input[name="csrfmiddlewaretoken"]').val()},
+          data:formdata,
+
+	  success:function(result){ $("#text"+ num).text(result.msg);
+	      lookImg(num);
+	    },
+	  error:function (){ $("#text"+ num).text("上传失败，请重新上传！");}
+	});
+       }    
+    });
+  }else{alert("未选择文件，请选择需要上传的文件！");}
+}
+</script>
+ 	<a href="javascript:void(0)" style="width:500px;height:100px;color:red;" class="easyui-linkbutton" onclick="submitForm()">提交</a>
+</div>
+<script>
+  function submitForm(){
+      $.messager.confirm('消息','注意：信息提交后将无法修改基本信息，且无法上传文件，只有等待学校审核！<br/>确定要提交给学校审核吗?',function(r){     
+     if (r){    	
+      $.ajax({url:"UploadImage",
+	  type:'PUT',
+      headers:{ "X-CSRFToken":$('input[name="csrfmiddlewaretoken"]').val()},
+	  data:{"paid":0,"card":'{{data.0.card}}',"stuname":'{{data.0.name}}',
+	      'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+	    },
+	  success:function(result){
+	      alert(result.msg);
+	      window.location.href="QueryRegister?card={{data.0.card}}";
+	    }
+	});
+     }    
+});//.panel('move',{ left:320, top:680});
+    }
+  $(function(){
+      let stuobj={{data.0.stuobj}};
+      if(stuobj==1){ $("#from7").hide();$("#from5").hide();$("#from6").hide();$("#from7").hide();}
+      else if(stuobj==4){$("#from7").hide();}
+      else if(stuobj==5){$("#from7").hide();}
+      else if(stuobj==6){$("#from6").hide();$("#from7").hide();}
+    });
+</script>
+<script>
+function lookImg(num){
+  let f = $("#fb"+num)[0];
+  if (f.files && f.files[0]){
+      $('#addImage'+num).html('');
+       for(var i=0;i<f.files.length;i++){
+	  var reader = new FileReader(f.files[i]);
+	  reader.onload = function(e){ $('#addImage'+num).append("<img  src='"+e.target.result+"'width='200px;'/>");}
+	  reader.readAsDataURL(f.files[i]);
+ } } }
+function nofind(){
+  var img=event.srcElement;
+    img.src="{% static 'elementary/error.jpg'%}"; //替换的图⽚
+  img.onerror=null; //控制不要⼀直触发错误
+}
+</script>
+{% endblock %}
+

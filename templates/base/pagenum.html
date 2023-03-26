@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+{% block mainbody %}
+<div data-options="region:'center'" style="background:#eee;">
+  <table>
+    <thead>
+      {% for item in title %}
+      <th>{{item}}</th>
+      {% endfor %}
+    </thead>
+    {% for item in data %}
+    <tr>
+      <td>{{forloop.counter}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.card}}</td>
+      <td>{{item.age}}</td>
+      <td>{{item.get_schobj_display}}</td>
+      <td>{{item.jfr1name}}</td>
+      <td>{{item.get_jfr1gx_display}}</td>
+      <td>{{item.jfr1tel}}</td>
+      <td>{{item.jfr2name}}</td>
+      <td>{{item.get_jfr2gx_display}}</td>
+      <td>{{item.jfr2tel}}</td>
+      <td>{{item.regaddress}}</td>
+      <td>{{item.resaddress}}</td>
+      <td>{{item.resaddressnum}}</td>
+      <td>{{item.get_regsch_display}}</td>
+      <td>{{item.get_stuobj_display}}</td>
+      <td>{{item.get_houseoption_display}}</td>
+      <td>{{item.get_operatortype_display}}</td>
+      <td>{{item.publicity}}</td>
+      <td>
+	<a id="btn" href="stuexamine?pa={{item.card}}" target="_blank" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">审核</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  <input id="pas" type="" value="{{pas}}" hidden>
+</div>
+<div data-options="region:'south'," style="height:35px;">
+  <div id="pp" class="easyui-pagination" style="background:#efefef;border:1px solid #ccc;" data-options="total:{{total}},pageNumber:{{pageNumber}},pageSize:{{pageSize}}"> </div>
+</div>
+{% endblock mainbody %}
+{% block myjs %}
+<style>
+table tr td { border:1px solid #000; }
+table thead th { border:1px solid #000; }
+table { text-align: center; border-collapse: collapse; padding:2px;}
+</style>
+<script>
+  $('#pp').pagination({
+      onSelectPage:function(pageNumber, pageSize){
+	  let thisURL=window.location.pathname;
+	  let pas=$('#pas').val();
+	  console.log(pas);
+	  window.location.href=thisURL + pas + "&pageSize=" + pageSize + "&pageNumber=" + pageNumber;
+	}
+    });
+</script>
+{% endblock myjs %}
+

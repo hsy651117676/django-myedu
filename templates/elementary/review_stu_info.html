@@ -1,0 +1,175 @@
+{%extends "base.html" %}
+{%load static %}
+{% block mainbody %}
+<div id="main" data-options="region:'center'" style="width:100%;height:100%;">
+  <p>学生基本信息</p>
+  <table id="stuinfo">
+    <tr>
+      <td>学生姓名</td><td>{{data.0.name}}</td>
+      <td>登记学校</td><td>{{data.0.schoolGrade}}</td>
+    </tr>
+    <tr>
+      <td>与监护人员1关系</td> <td>{{data.0.get_jfr1gx_display}}</td>
+      <td>监护人员1姓名</td> <td>{{data.0.jfr1name}}</td>
+      <td>监护人员1电话</td> <td>{{data.0.jfr1tel}}</td>
+    </tr>
+    <tr>
+      <td>与监护人员2关系</td> <td>{{data.0.get_jfr2gx_display}}</td>
+      <td>监护人员2姓名</td> <td>{{data.0.jfr2name}}</td>
+      <td>监护人员2电话</td> <td>{{data.0.jfr2tel}}</td>
+    </tr>
+    <tr>
+      <td>户籍所在地</td> <td colspan="5">{{data.0.regaddress.addressAll}}</td>
+    </tr>
+    <tr>
+      <td>现居住地址</td> <td colspan="5">{{data.0.resaddress.addressAll}}</td>
+    </tr>
+    <tr>
+      <td>现住房类型</td> <td>{{data.0.get_houseoption_display}}</td>
+      <td>学生年龄</td> <td>{{data.0.age}}</td>
+      <td>身份证号</td> <td>{{data.0.card}}</td>
+    </tr>
+    <tr>
+      <td>登记属性</td> <td colspan="3">{{data.0.get_stuobj_display}}</td>
+      <td>审核状态</td> <td><font color="red">{{data.0.get_operatortype_display}}</font></td>
+    </tr>
+  </table>
+  <div id="operatorResult">	{% csrf_token %}
+    <p>审核<sub>初审不通过:非申报范围不驳回,用户无法修改，直接审核不通过，流程结束。</sub></p>
+    审核结果：
+    {% if request.user.last_name == '0' %} 
+    <select id="operator" class="easyui-combobox" style="width:200px;">
+      <option value="4">驳回修改</option>
+      <option value="5">复审通过</option>
+      <option value="6">复审不通过</option>
+    </select>
+    {% else %} 
+    <select id="operator" class="easyui-combobox" style="width:200px;">
+      <option value="4">审核不通过（驳回修改）</option>
+      <option value="2">初审通过</option>
+      <option value="3">初审不通过（不允许再次提交）</option>
+    </select>
+    {% endif %} 
+    审核补充意见：
+    <select id="operatortype" class="easyui-combobox" style="width:500px;">
+    <option></option>
+    <option>户籍所在地不在我校招生范围，请以实际符合的相应类型填报</option>
+    <option>不在我校服务划片范围内</option>
+    <option>学生家长请求驳回修改</option>
+    <option>上传资料不完整</option>
+    <option>上传资料不清晰</option>
+    <option>上传资料无效</option>
+    <option>房屋地址或购房人不详，请补充相关材料</option>
+    <option>不属于填报范围内人员</option>
+    <option>房主与就读孩子的关系不明，请上传结婚证或出生证等能证明房主与孩子关系的证明材料</option>
+    <option>证明类材料未加盖相关单位公章，无法印证材料真实性</option>
+    <option>证明类材料页数不全，存在缺失关键页情况</option>
+    <option>合同类材料未加盖相关单位公章，无法印证材料真实性</option>
+    <option>合同类材料页数不全，存在缺失关键页情况</option>
+    <option>登记属性填写错误</option>
+    <option>不是适龄范围，年龄错误！审核不通过（不允许再次提交）</option>
+  </select>
+    <a href="javascript:void(0)" class="easyui-linkbutton" style="" onclick="submitForm()">提交审核结果</a>
+  </div>
+  <p>材料上传情况<sub>温馨提示：单击缩略图即可看到原始图像！</sub></p>
+  <table id="images">
+    <tr><td>材料名称</td><td>缩略图</td> <td>材料名称</td><td>缩略图</td> <td>材料名称</td><td>缩略图</td> <td>材料名称</td><td>缩略图</td>
+    </tr>
+    <tr>
+      <td>*户口籍首页 </td>
+      <td><a onclick="stuExamineImage(1)"><img id="img1" src="/static/stuimage/{{data.0.card}}/1_1x.jpg" onerror="nofind()"></a></td>
+      <td>*监护人员1页</td>
+      <td><a onclick="stuExamineImage(2)"><img id="img2" src="/static/stuimage/{{data.0.card}}/2_1x.jpg" onerror="nofind()"></a></td>
+      <td>监护人员2页</td>
+      <td><a onclick="stuExamineImage(3)"><img id="img3" src="/static/stuimage/{{data.0.card}}/3_1x.jpg" onerror="nofind()"></a></td>
+      <td>*学生本页</td>
+      <td><a onclick="stuExamineImage(4)"><img id="img4" src="/static/stuimage/{{data.0.card}}/4_1x.jpg" onerror="nofind()"></a></td>
+    <tr><td>{{imagename.0}}</td>
+      <td><a onclick="stuExamineImage(5)"><img id="img5" src="/static/stuimage/{{data.0.card}}/5_1x.jpg" onerror="nofind()"></a></td>
+      <td>{{imagename.1}}</td>
+      <td><a onclick="stuExamineImage(6)"><img id="img6" src="/static/stuimage/{{data.0.card}}/6_1x.jpg" onerror="nofind()"></a></td>
+      <td>{{imagename.2}}</td>
+      <td><a onclick="stuExamineImage(7)"><img id="img7" src="/static/stuimage/{{data.0.card}}/7_1x.jpg" onerror="nofind()"></a></td>
+      <td>其他证明或补充页</td>
+      <td><a onclick="stuExamineImage(8)"><img id="img8" src="/static/stuimage/{{data.0.card}}/8_1x.jpg" onerror="nofind()"></a></td>
+    </tr>
+  </table>
+  <div>
+    <p>操作日志</p>
+    <table id="log">
+      <tr>
+        <td>序号</td>
+        <td>操作人</td>
+        <td>当前状态</td>
+        <td>操作类型</td>
+        <td colspan="3">操作情况补充说明</td>
+        <td>操作时间</td>
+      </tr>
+      {% for item in log %}
+<tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{item.names}}</td>
+        <td>{{item.get_edittype_display}}</td>
+        <td>{{item.result}}</td>
+        <td colspan="3">{{item.resultnotes}}</td>
+        <td>{{item.times}}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+<style>
+img {height:160px;width:100px;}
+#images tr td { border:1px solid #000000;width:120px; }
+#stuinfo tr td { border:1px solid #000000;width:160px; }
+#operatorTable tr td { border:1px solid #000000;width:160px; }
+#log td { border:1px solid #000000;width:120px; }
+table { text-align: center; border-collapse: collapse; padding:2px;}
+</style>
+<script>
+function submitForm(){
+let operatortext=$("#operator").combobox("getText");
+let operator=$("#operator").val();
+let operatortype=$("#operatortype").combobox("getText");
+if(operator=='4' && operatortype.length<=5){
+alert("必须填写驳回理由!");
+}else{
+$.messager.confirm('当前学生：{{data.0.name}}',"你当前选择的学生是“{{data.0.name}}”,审核结果为：“" + operatortext + '”,确认提交吗？',function(r){
+if (r){
+$.ajax({url:"",
+type:'POST',
+data:{"card":"{{data.0.card}}",
+"operator":operator,
+"operatortype":operatortype,
+'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+},
+success:function(result){
+alert(result.msg);
+reload();
+}
+});
+}
+});//.panel('move',{left:220,top:280});
+}}
+</script>
+<script>
+$(function(){
+let stuobj={{data.0.stuobj}};
+if(stuobj==1){ $("#img7").hide();$("#img5").hide();$("#img6").hide();$("#img7").hide();}
+else if(stuobj==4){$("#img7").hide();}
+else if(stuobj==5){$("#img7").hide();}
+else if(stuobj==6){$("#img6").hide();$("#img7").hide();}
+});
+function nofind(){
+var img=event.srcElement;
+img.src="{% static 'elementary/error.jpg'%}"; //替换的图⽚
+img.onerror=null; //控制不要⼀直触发错误
+}
+</script>
+<script>
+function stuExamineImage(value){
+window.open("SeeImage?card={{data.0.card}}", 'newwindow', 'width='+ (screen.availWidth - 10) +',height='+ (screen.availHeight-50) +',top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no')  
+}
+</script>
+{% endblock %}
+

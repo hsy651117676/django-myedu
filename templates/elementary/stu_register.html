@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+
+{% block head %}
+  <script type="text/javascript" src="/static/js/validator.js"></script>
+  {% endblock head %}
+  {% block mainbody %}
+  <form action="" id="ff" method="post">
+    {% csrf_token %}
+    <table>
+      <tr>
+        <td>学生姓名：</td>
+        <td>
+          <input id="name" class="easyui-textbox" name="name" style="width: 400px;" value="{{data.0.name}}"
+            data-options="prompt:'请输入姓名',validType:'CNchar',required:true" />
+        </td>
+      </tr>
+      <tr>
+        <td>学生身份证号：</td>
+        <td>
+          <input id='card' class="easyui-textbox" name="card" style="width:400px;" 
+            value="{{data.0.card}}" data-options="validType:'idcheck',required:true">
+        </td>
+      </tr>
+      <tr>
+        <td>年龄：</td>
+        <td>
+          <input id="age" class="easyui-textbox" type="text" name="age" data-options="required:true" value="{{data.0.age}}"/>
+        </td>
+      </tr>
+      <tr>
+        <td>监护人1姓名：</td>
+        <td>
+          <input id="" class="easyui-textbox" name="jfr1name" style="width: 400px;" value="{{data.0.jfr1name}}"
+            data-options="prompt:'请输入姓名',validType:'CNchar',required:true" />
+        </td>
+      </tr>
+      <tr>
+        <td>监护人1与登记人关系</td>
+        <td>
+          <select id="jfr1gx" class="easyui-combobox" name="jfr1gx" style="width:400px;" data-options="required:true">
+            <option value="{{data.0.jfr1gx}}">{{data.0.get_jfr1gx_display}}</option>
+            {% for i in dic.relations%}
+            <option value="{{i.0}}">{{i.1}}</option>
+            {% endfor %}
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>监护人1联系电话：</td>
+        <td>
+          <input id="" class="easyui-textbox" name="jfr1tel" style="width: 400px;" value="{{data.0.jfr1tel}}" 
+            data-options="prompt:'请输入正确的手机号码',validType:'phoneNum',required:true" />
+        </td>
+      </tr>
+      <tr>
+        <td>监护人2姓名：</td>
+        <td>
+          <input id="" class="easyui-textbox" name="jfr2name" style="width: 400px;"  value="{{data.0.jfr2name}}"
+            data-options="prompt:'请输入姓名',validType:'CNchar'," />
+        </td>
+      </tr>
+      <tr>
+        <td>监护人2与登记人关系</td>
+        <td>
+          <select id="jfr2gx" class="easyui-combobox" name="jfr2gx" style="width:400px;">
+            <option value="{{data.0.jfr2gx|default:"1"}}">{{data.0.get_jfr2gx_display}}</option>
+            {% for i in dic.relations%}
+            <option value="{{i.0}}">{{i.1}}</option>
+            {% endfor %}
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>监护人2联系电话：</td>
+        <td>
+          <input id="" class="easyui-textbox" name="jfr2tel" style="width: 400px;" value="{{data.0.jfr2tel}}" 
+            data-options="prompt:'请输入正确的手机号码',validType:'phoneNum'," />
+        </td>
+      </tr>
+      <tr>
+        <td>户籍所在地：</td>
+        <td>
+          <input id="regaddress"  class="easyui-combobox" name="regaddress" data-options="required:true,editable:false," style="width:400px;"/>
+        </td>
+      </tr>
+      <tr>
+        <td>居住所在地：</td>
+        <td>
+          <input id="resaddress" class="easyui-combobox" name="resaddress" data-options="required:true,editable:false," style="width:400px;" />
+        </td>
+      </tr>
+      <tr>
+        <td>居住地详细地址：</td>
+        <td>
+          <input id="resaddressnum" class="easyui-textbox" type="text" name="resaddressnum" data-options="required:true" value="{{data.0.resaddressnum}}" style="width:400px;"/>
+        </td>
+      </tr>
+      <tr>
+        <td>预登记学校名称：</td>
+        <td>
+          <select id="schoolGrade" class="easyui-combobox" name="schoolGrade" style="width:400px;" data-options="required:true" >
+            <option value="{{data.0.schoolGrade.id}}">{{data.0.schoolGrade.school}}</option>
+            {% for i in sch %}
+            <option value="{{i.id}}">{{i.school.name}}</option>
+            {% endfor %}
+        </td>
+      </tr>
+      <tr>
+        <td>登记对象属性：</td>
+        <td>
+          <select id="stuobj" class="easyui-combobox" name="stuobj" style="width:400px;" data-options="required:true" >
+            <option value="{{data.0.stuobj}}">{{data.0.get_stuobj_display}}</option>
+            {% for i in dic.stuobj %}
+            <option value="{{i.0}}">{{i.1}}</option>
+            {% endfor %}
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>预登记学生现住房类型：</td>
+        <td>
+          <select id="houseoption" class="easyui-combobox" name="houseoption" style="width:400px;" data-options="required:true">
+            <option value="{{data.0.houseoption}}">{{data.0.get_houseoption_display}}</option>
+            {% for i in dic.houseoptions%}
+            <option value="{{i.0}}">{{i.1}}</option>
+            {% endfor %}
+        </td>
+      </tr>
+    </table>
+    <a id="btn" type="submit" class="easyui-linkbutton"  data-options="iconCls:'icon-save'">保存</a>
+  </form>
+
+  {% endblock mainbody %}
+  {% block myjs%}
+  $('#card').textbox({  
+	    onChange: function(newValue,oldValue) {
+  console.log(newValue);
+  if(cardcheck(newValue)== newValue){
+  $.ajax({
+  url:"checkuser?card=" + newValue,
+  method:"GET",
+  dataType:"json",
+  success:function(data){
+  if(data.msg=='yes'){
+  window.location.replace("./Register?card=" + newValue);
+  }
+  },
+  });
+  }else{ }
+  }});
+
+  $(function() {
+  $('#btn').click(function() {
+  $('#ff').form('submit',{
+  url:'Register',
+  contentType : "application/x-www-form-urlencoded;charset=utf-8",
+  onSubmit:function()
+  {
+  var isValid = $(this).form('validate');
+  if (!isValid){ $.messager.show({ title:'消息', msg:'数据验证未通过' })
+  } 
+  return isValid; }, 
+  success:function(data)
+  {
+  data=JSON.parse(data);
+      $.messager.confirm('提示', data.msg + ',是否转到上传资料页面？', function(r){
+    	if (r){
+  window.location.replace("./UploadImage?card=" + $('#card').val());
+    	}
+    });
+  }
+  });
+  }); 
+  })
+
+  var $combotree = $("#regaddress");
+  $combotree.combotree({
+  url: "/base/queryregion?pid=0&level=1",
+  method:"GET",
+  panelWidth: '600',
+  valueField: 'id',
+  parentField : 'pid',
+  textField: 'addressAll',
+  onClick:function(node){
+  var $tree = $combotree.combotree("tree");
+  if(node.level!=4){
+  $combotree.combo("showPanel");
+  if($tree.tree('isLeaf', node.target)){
+  $tree.tree('append',{parent:node.target,data:getQueryRegion(node)});
+  }
+  }
+  },
+  onLoadSuccess:function(node,data){
+  $('#regaddress').combotree('setValue', '{{data.0.regaddress.mid}}');
+  $('#regaddress').combotree('setText', '{{data.0.regaddress.addressAll}}');
+  },
+  });
+
+  var $rsct= $("#resaddress");
+  $rsct.combotree({
+  url: "/base/queryregion?pid=520281000000&level=4",
+  method:"GET",
+  panelWidth: '600',
+  valueField: 'id',
+  parentField : 'pid',
+  textField: 'addressAll',
+  onClick:function(node){
+  var $rscttree= $rsct.combotree("tree");
+  if(node.level!=5){
+  $rsct.combo("showPanel");
+  if($rscttree.tree('isLeaf', node.target)){
+  $rscttree.tree('append',{parent:node.target,data:getQueryRegion(node)});
+  }
+  }
+  },
+  onLoadSuccess:function(node,data){
+  $('#resaddress').combotree('setValue', '{{data.0.resaddress.mid}}');
+  $('#resaddress').combotree('setText', '{{data.0.resaddress.addressAll}}');
+  },
+  });
+
+  function getQueryRegion(node){
+  var result;
+  var mylevel=node.level + 1;
+  $.ajax({
+  url:"/base/queryregion?pid=" + node.id + "&level=" + mylevel,
+  method:"GET",
+  async:false,
+  dataType:"json",
+  success:function(mydata){ result =mydata; },
+  });
+  return result;
+  }
+  {% endblock myjs%}

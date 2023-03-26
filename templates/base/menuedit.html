@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block mainbody %}
+<table class="easyui-datagrid">
+  <thead>
+    <tr>
+      <th data-options="field:'id'">id</th>
+      <th data-options="field:'melement'">element</th>
+      <th data-options="field:'mhref'">href</th>
+      <th data-options="field:'msrc'">src</th>
+      <th data-options="field:'mclass'">class</th>
+      <th data-options="field:'mdataoption'">dataoption</th>
+      <th data-options="field:'mtitle'">title</th>
+      <th data-options="field:'mstyle'">mstyle</th>
+      <th data-options="field:'level'">level</th>
+      <th data-options="field:'pid'">pid</th>
+      <th data-options="field:'mid'">mid</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i in mydata %}
+    <tr>
+      <td>{{i.id}}</td>
+      <td>{{i.melement}}</td>
+      <td>{{i.mhref}}</td>
+      <td>{{i.msrc}}</td>
+      <td>{{i.mclass}}</td>
+      <td>{{i.mdataoption}}</td>
+      <td>{{i.mtitle}}</td>
+      <td>{{i.mstyle}}</td>
+      <td>{{i.level}}</td>
+      <td>{{i.pid}}</td>
+      <td>{{i.mid}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock mainbody %}
+{%  block js %}
+
+{% endblock js %}
+

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="/static/img/faviocn.ico">
+    <link rel="stylesheet" type="text/css" href="/static/easyui/themes/icon.css">
+    <script type="text/javascript" src="/static/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/easyui/jquery.easyui.min.js"></script>
+  </head>
+  <body >
+    <h1>登记系统未开放！</h1>
+    <h3>用户登录</h3>
+    <form action="" method="post" id="myform">
+      {% csrf_token %}
+     <table>
+       <tr>
+          <td>
+            <h3>用户名</h3>
+          </td>
+          <td>
+      <input type="text" name="username" id="username">
+          </td>
+        </tr> 
+        <tr>
+          <td>
+            <h3>密码：</h3>
+          </td>
+          <td>
+      <input class="easyui-passwordbox"  type="text" name="pswd" id="pswd">
+          </td>
+        </tr>
+        <tr>
+          <td>
+
+        {{register_form.captcha}}
+          </td>
+          <td>
+
+          </td>
+        </tr>
+      </table> 
+        {{msg}}
+      <input type="submit" id="loginbtn" value="登录">
+    </form>
+    <button class="btn" onclick="userlogin()">测试个人用户凳录</button>
+  </body>
+  <script>
+  var obj1=document.getElementById("username");
+  var obj2=document.getElementById("pswd");
+  var ww=document.getElementById("loginbtn");
+  function test() { document.getElementById("myform").submit(); }
+  function userlogin(){ obj1.value="user"; obj2.value="pzsjyjuser"; test(); }
+  </script>
+
+</html>

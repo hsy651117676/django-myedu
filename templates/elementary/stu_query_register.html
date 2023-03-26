@@ -1,0 +1,100 @@
+{%extends "base.html" %}
+{%load static %}
+{% block mainbody %}
+<div id="main" data-options="region:'center',title:'预登记情况总表'" style="width:100%;height:100%;">
+  <div>
+    <h3>当前学生：{{data.0.name}}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+    学生年龄：{{data.0.age}}岁&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+    预报名登记学校名称：{{data.0.schoolGrade}}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+    </h3>
+    <h3>
+    与监护人员1关系：{{data.0.get_jfr1gx_display}}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+    监护人员1姓名：{{data.0.jfr1name}}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+    监护人员1联系电话：{{data.0.jfr1tel}}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+    </h3>
+    <h3>
+    与监护人员2关系：{{data.0.get_jfr2gx_display}}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+    监护人员2姓名：{{data.0.jfr2name}}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+    监护人员2联系电话：{{data.0.jfr2tel}}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+    </h3>
+    <h3>
+    户籍所在地：{{data.0.regaddress.addressAll}}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+    现居住地址：{{data.0.resaddress.addressAll}}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+    </h3>
+    <h3>
+    住房类型：{{data.0.get_houseoption_display}}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+    学生身份证号：{{data.0.card}}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+    登记属性：{{data.0.get_stuobj_display}}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+    </h3>
+    <h1 style="color:red;">
+    现审核状态：{{data.0.get_operatortype_display}}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+    </h1>
+  </div>
+    <table id="images">
+      <tr><td>材料名称</td><td>缩略图</td> <td>材料名称</td><td>缩略图</td> <td>材料名称</td><td>缩略图</td> <td>材料名称</td><td>缩略图</td>
+      </tr>
+      <tr>
+	<td>*户口籍首页 </td>
+	<td><img id="img1" src="/static/stuimage/{{data.0.card}}/1_1x.jpg" onerror="nofind()"></td>
+	<td>*监护人员1页</td>
+	<td><img id="img2" src="/static/stuimage/{{data.0.card}}/2_1x.jpg" onerror="nofind()"></td>
+	<td>监护人员2页</td>
+	<td><img id="img3" src="/static/stuimage/{{data.0.card}}/3_1x.jpg" onerror="nofind()"></td>
+	<td>*学生本页</td>
+	<td><img id="img4" src="/static/stuimage/{{data.0.card}}/4_1x.jpg" onerror="nofind()"></td></tr>
+      <tr><td>{{imagename.0}}</td>
+	<td><img id="img5" src="/static/stuimage/{{data.0.card}}/5_1x.jpg" onerror="nofind()"></td>
+	<td>{{imagename.1}}</td>
+	<td><img id="img6" src="/static/stuimage/{{data.0.card}}/6_1x.jpg" onerror="nofind()"></td>
+	<td>{{imagename.2}}</td>
+	<td><img id="img7" src="/static/stuimage/{{data.0.card}}/7_1x.jpg" onerror="nofind()"></td>
+	<td>其他证明或补充页</td>
+	<td><img id="img8" src="/static/stuimage/{{data.0.card}}/8_1x.jpg" onerror="nofind()"></td>
+	  </tr>
+    </table>
+    <div>
+      <h1>操作日志</h1>
+      <table id="log">
+	<tr>
+	  <td>序号</td>
+	  <td>操作人</td>
+	  <td>当前状态</td>
+	  <td>操作类型</td>
+	  <td>操作情况补充说明</td>
+	  <td>操作时间</td>
+	</tr>
+	{% for item in log %}
+	<tr>
+	  <td>{{forloop.counter}}</td>
+	  <td>{{item.names}}</td>
+	  <td>{{item.get_edittype_display}}</td>
+	  <td>{{item.result}}</td>
+	  <td>{{item.resultnotes}}</td>
+	  <td>{{item.times}}</td>
+	</tr>
+	{% endfor %}
+      </table>
+    </div>
+</div>
+<style>
+  img {height:160px;width:100px;}
+  #images tr td { border:1px solid #0094ff;width:120px; }
+  #log td { border:1px solid #0094ff;width:160px; }
+  table { text-align: center; border-collapse: collapse; padding:2px;}
+</style>
+<script>
+  $(function(){
+      let stuobj={{data.0.stuobj}};
+      if(stuobj==1){ $("#img7").hide();$("#img5").hide();$("#img6").hide();$("#img7").hide();}
+      else if(stuobj==4){$("#img7").hide();}
+      else if(stuobj==5){$("#img7").hide();}
+      else if(stuobj==6){$("#img6").hide();$("#img7").hide();}
+    });
+function nofind(){
+  var img=event.srcElement;
+    img.src="{% static 'elementary/error.jpg'%}"; //替换的图⽚
+  img.onerror=null; //控制不要⼀直触发错误
+}
+</script>
+{% endblock %}
+

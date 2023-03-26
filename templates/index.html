@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>人个系统</title>
+    <link rel="shortcut icon" href="/static/img/faviocn.ico">
+    <link rel="stylesheet" itype="text/css" id="easyuiTheme" href="/static/easyui/themes/black/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/static/easyui/themes/icon.css">
+    <script type="text/javascript" src="/static/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/static/easyui/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/static/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/static/js/addtab.js"></script>
+    <script type="text/javascript" src="/static/js/addwin.js"></script>
+    <script type="text/javascript" src="/static/js/changTheme.js"></script>
+  </head>
+  <body class="easyui-layout" data-options="border:false">
+    <div id="mywindows"></div>
+    <div data-options="region:'north',border:true" style="height:40px;padding:1px">
+      <a style="float:left;width:30%;font-size:20px;">当前登录用户:{{request.user.first_name}}  </a>
+      <a style="float:right;width:6%;" href="javascript:void(0);" rel="external nofollow" class="easyui-menubutton" data-options="menu:'#layout_north_xtMenu'">系统菜单</a>
+      <a style="float:right;width:6%;" href="javascript:void(0);" rel="external nofollow" class="easyui-menubutton" data-options="menu:'#layout_north_pfMenu'">更换皮肤</a>
+    </div>
+    <div id="layout_north_xtMenu" style=" display: none;">
+      <div> <a href="/admin/" style="width:150px;" class="easyui-linkbutton" data-options="iconCls:'icon-search'">后台管理</a> </div>
+      <div> <a style="width:150px;" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="addwin(&quot;{{request.user}}&quot;,&quot;/login/&quot;)">修改密码</a> </div>
+      <div> <a href="/logout/" style="width:150px;" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">注  销</a> </div>
+    </div>
+    <div id="layout_north_pfMenu" style=" display: none;"> <div onclick="changTheme('black')">black</div> <div onclick="changTheme('bootstrap')">bootstrap</div> <div onclick="changTheme('default')">default</div> <div onclick="changTheme('gray')">gray</div> <div onclick="changTheme('material')">material</div> <div onclick="changTheme('metro')">metro</div> <div onclick="changTheme('ui-cupertino')">ui-cupertino</div> <div onclick="changTheme('ui-dark-hive')">ui-dark-hive</div> <div onclick="changTheme('ui-pepper-grinder')">ui-pepper-grinder</div> <div onclick="changTheme('ui-sunny')">ui-sunny</div>
+    </div>
+    <div data-options="region:'west',split:true,title:'菜单栏'" style="width:140px;padding:0px;">
+      <div class="easyui-accordion" data-options="split:false,border:false" style="width:100%;height:100%;padding:0px;">
+        {{dic.menu|safe}}
+
+        <div title="帮助" data-options="iconCls:'icon-help'" style="padding:0px;">
+          <a href="javascript:void(0);" src="/elementary/index" class="easyui-linkbutton cs-navi-tab" style=" width:100%;" data-options="iconCls:'icon-search'">elementary_index</a>
+        </div>
+      </div>
+    </div>
+    <div data-options="region:'south',border:false" style="height:30px;padding:0px;">
+      版权所有：黄胜原,仅限盘州市教育系统内部使用。
+    </div>
+    <div id="mainPanle" data-options="region:'center',border:false," style="width:100%;height:100%">
+      <div id="tabs" class="easyui-tabs" data-options="tools:'#tab-tools'" style="width:100%;height:100%">
+        <div class="home" title="主页">
+          <marquee style="float:left;width:100%;font-size:20px;">软件正在开发测试中，如对网站有任何建议或意见，请联系QQ：651117676</marquee>
+        </div>
+      </div>
+    </div>
+    <div id="mm" class="easyui-menu cs-tab-menu">
+      <div id="mm-tabupdate">刷新</div>
+      <div id="mm-tabclose">关闭</div>
+      <div id="mm-tabcloseleft">关闭当前左侧</div>
+      <div id="mm-tabcloseright">关闭当前右侧</div>
+      <div id="mm-tabcloseother">关闭其他</div>
+      <div id="mm-tabcloseall">关闭全部</div>
+    </div>
+    <style>
+.easyui-linkbutton{text-align:left;width:100%;}
+</style>
+    <script>
+    $(function() {
+    tabCloseEven()
+    $('.cs-navi-tab').click(function() { var $this = $(this); var href = $this.attr('src'); var title = $this.text(); addTab(title, href); });
+    var skins = $('.li-skinitem span').click(function() { var $this = $(this); if ($this.hasClass('cs-skin-on')) return; skins.removeClass('cs-skin-on'); $this.addClass('cs-skin-on'); var skin = $this.attr('rel'); $('#swicth-style').attr('href', themes[skin]); setCookie('cs-skin', skin); skin == 'dark-hive' ? $('.cs-north-logo').css('color', '#FFFFFF') : $('.cs-north-logo').css('color', '#000000'); });
+    if (getCookie('cs-skin')) { var skin = getCookie('cs-skin'); $('#swicth-style').attr('href', themes[skin]); $this = $('.li-skinitem span[rel=' + skin + ']'); $this.addClass('cs-skin-on'); skin == 'dark-hive' ? $('.cs-north-logo').css('color', '#FFFFFF') : $('.cs-north-logo').css('color', '#000000'); };
+    });
+    </script>
+  </body>
+</html>
