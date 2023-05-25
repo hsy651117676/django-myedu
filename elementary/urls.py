@@ -28,4 +28,6 @@ urlpatterns = [
     path('stu/publicity', publicitys, name='stu_publicity'),
     path('stu/UploadImage', stuUploadImage.as_view(), name='stu_upload_image'),
 
+    path('stu/keyboardpiano', keyboardsPiano, name='keyboardPiano'),
+
 ]

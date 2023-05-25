@@ -32,6 +32,8 @@ urlpatterns = [
 
     path('elementary/', include('elementary.urls')),
 
+    path('supports/', include('supports.urls')),
+
     path('login/', views.login_view),
     path('logout/', views.logout_view, name='logout'),
     path('index/', views.index_view, name='index'),

@@ -62,10 +62,8 @@ class basiceduchoices():
 
 
 class stu_grades(models.Model):
-    id = models.PositiveSmallIntegerField(
-              verbose_name='年级', primary_key=True)
-    name = models.CharField(
-              max_length=50, verbose_name='年级名称')
+    id = models.PositiveSmallIntegerField(verbose_name='年级', primary_key=True)
+    name = models.CharField(max_length=50, verbose_name='年级名称')
 
     class Meta:
         verbose_name = '年级名称表'
@@ -76,10 +74,8 @@ class stu_grades(models.Model):
 
 
 class stu_schools(models.Model):
-    id = models.PositiveSmallIntegerField(
-            verbose_name='学校编号', primary_key=True)
-    name = models.CharField(
-              max_length=50, verbose_name='学校名称')
+    id = models.PositiveSmallIntegerField(verbose_name='学校编号', primary_key=True)
+    name = models.CharField(max_length=50, verbose_name='学校名称')
 
     class Meta:
         verbose_name = '学校名称表'
@@ -90,15 +86,10 @@ class stu_schools(models.Model):
 
 
 class stu_school_grade(models.Model):
-    id = models.PositiveSmallIntegerField(
-              verbose_name='序号', primary_key=True)
-    school = models.ForeignKey(
-                stu_schools, null=True,  db_constraint=False,
-                related_name='schoolname',
-                on_delete=models.SET_NULL)
-    grade = models.ForeignKey(
-                stu_grades,  null=True, db_constraint=False,
-                on_delete=models.SET_NULL)
+    id = models.PositiveSmallIntegerField(verbose_name='序号', primary_key=True)
+    school = models.ForeignKey(stu_schools, null=True, db_constraint=False,
+                               related_name='schoolname', on_delete=models.SET_NULL)
+    grade = models.ForeignKey(stu_grades, null=True, db_constraint=False, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = '学校年级名称总表'
@@ -111,47 +102,47 @@ class stu_school_grade(models.Model):
 
 class stu_register_table(models.Model):
     id = models.AutoField(
-              primary_key=True)
+        primary_key=True)
     name = models.CharField(
-              max_length=20, null=True, unique=False, verbose_name='学生姓名')
+        max_length=20, null=True, unique=False, verbose_name='学生姓名')
     card = models.CharField(
-              max_length=18, null=True, unique=False, verbose_name='学生身份证号')
+        max_length=18, null=True, unique=False, verbose_name='学生身份证号')
     age = models.IntegerField(
-              null=True, verbose_name='年龄')
+        null=True, verbose_name='年龄')
     schoolGrade = models.ForeignKey(
-                stu_school_grade,  null=True, db_constraint=False,
-                on_delete=models.SET_NULL)
+        stu_school_grade, null=True, db_constraint=False,
+        on_delete=models.SET_NULL)
     jfr1name = models.CharField(
-              max_length=20, null=True, unique=False, verbose_name='监护人1姓名')
+        max_length=20, null=True, unique=False, verbose_name='监护人1姓名')
     jfr1gx = models.PositiveSmallIntegerField(
-              verbose_name='监护人1与登记人关系', choices=basiceduchoices.relations)
+        verbose_name='监护人1与登记人关系', choices=basiceduchoices.relations)
     jfr1tel = models.CharField(
-              max_length=11, null=True, unique=False, verbose_name='监护人2联系电话')
+        max_length=11, null=True, unique=False, verbose_name='监护人2联系电话')
     jfr2name = models.CharField(
-              max_length=20, null=True, unique=False, verbose_name='监护人2姓名')
+        max_length=20, null=True, unique=False, verbose_name='监护人2姓名')
     jfr2gx = models.PositiveSmallIntegerField(
-              verbose_name='监护人2与登记人关系',
-              choices=basiceduchoices.relations, null=True)
+        verbose_name='监护人2与登记人关系',
+        choices=basiceduchoices.relations, null=True)
     jfr2tel = models.CharField(
-              max_length=11, null=True, unique=False, verbose_name='监护人2联系电话')
+        max_length=11, null=True, unique=False, verbose_name='监护人2联系电话')
     regaddress = models.ForeignKey(
-                region, null=True, db_constraint=False,
-                on_delete=models.SET_NULL,
-                related_name='reg', verbose_name='户籍所在地')
+        region, null=True, db_constraint=False,
+        on_delete=models.SET_NULL,
+        related_name='reg', verbose_name='户籍所在地')
     resaddress = models.ForeignKey(
-                region, null=True, db_constraint=False,
-                on_delete=models.SET_NULL,
-                related_name='res', verbose_name='居住所在地')
+        region, null=True, db_constraint=False,
+        on_delete=models.SET_NULL,
+        related_name='res', verbose_name='居住所在地')
     resaddressnum = models.CharField(
-              max_length=100, null=True, unique=False, verbose_name='居住地详细地址')
+        max_length=100, null=True, unique=False, verbose_name='居住地详细地址')
     stuobj = models.PositiveSmallIntegerField(
-              verbose_name='登记对象属性', choices=basiceduchoices.stuobj)
+        verbose_name='登记对象属性', choices=basiceduchoices.stuobj)
     houseoption = models.PositiveSmallIntegerField(
-              verbose_name='预登记学生现住房类型', choices=basiceduchoices.houseoptions)
+        verbose_name='预登记学生现住房类型', choices=basiceduchoices.houseoptions)
     operatortype = models.IntegerField(
-              '操作状态', default=0, choices=basiceduchoices.operator)
+        '操作状态', default=0, choices=basiceduchoices.operator)
     publicid = models.IntegerField(
-              '是否公示', default=0)
+        '是否公示', default=0)
 
     class Meta:
         verbose_name = '预登记情况总表'
@@ -163,17 +154,17 @@ class stu_register_table(models.Model):
 
 class operation_stu_log(models.Model):
     card = models.CharField(
-              max_length=18, null=True, unique=False, verbose_name='学生身份证号')
+        max_length=18, null=True, unique=False, verbose_name='学生身份证号')
     edittype = models.IntegerField(
-              '操作状态', default=0, choices=basiceduchoices.operator)
+        '操作状态', default=0, choices=basiceduchoices.operator)
     names = models.CharField(
-              max_length=11, null=True, unique=False, verbose_name='操作人')
+        max_length=11, null=True, unique=False, verbose_name='操作人')
     times = models.CharField(
-              max_length=20, null=True, unique=False, verbose_name='操作时间')
+        max_length=20, null=True, unique=False, verbose_name='操作时间')
     result = models.CharField(
-              max_length=100, null=True, unique=False, verbose_name='操作结果')
+        max_length=100, null=True, unique=False, verbose_name='操作结果')
     resultnotes = models.CharField(
-              max_length=200, null=True, unique=False, verbose_name='操作情况补充说明')
+        max_length=200, null=True, unique=False, verbose_name='操作情况补充说明')
 
     class Meta:
         verbose_name = '预登记情况操作日志'
@@ -185,21 +176,21 @@ class operation_stu_log(models.Model):
 
 class infant_stu(models.Model):
     id = models.AutoField(
-              primary_key=True)
+        primary_key=True)
     name = models.CharField(
-              max_length=20, null=True, unique=False, verbose_name='学生姓名')
+        max_length=20, null=True, unique=False, verbose_name='学生姓名')
     card = models.CharField(
-              max_length=18, null=True, unique=False, verbose_name='学生身份证号')
+        max_length=18, null=True, unique=False, verbose_name='学生身份证号')
     age = models.IntegerField(
-              '年龄')
+        '年龄')
     regaddress = models.CharField(
-              max_length=100, null=True, unique=False, verbose_name='户籍所在地')
+        max_length=100, null=True, unique=False, verbose_name='户籍所在地')
     resaddress = models.CharField(
-              max_length=100, null=True, unique=False, verbose_name='居住所在地')
+        max_length=100, null=True, unique=False, verbose_name='居住所在地')
     regsch = models.CharField(
-              max_length=100, null=True, unique=False, verbose_name='意向学校')
+        max_length=100, null=True, unique=False, verbose_name='意向学校')
     tel = models.CharField(
-              max_length=11, null=True, unique=False, verbose_name='联系电话')
+        max_length=11, null=True, unique=False, verbose_name='联系电话')
 
     class Meta:
         verbose_name = '幼儿园入学意向调查表'

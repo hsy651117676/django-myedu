@@ -288,6 +288,11 @@ def queryRegion(request):
     return HttpResponse(mydata)
 
 
+def keyboard(request):
+
+    return render(request, 'base/keyboard.html')
+
+
 def page_not_found(request, exception):
     return render(request, 'base/404.html')
 
